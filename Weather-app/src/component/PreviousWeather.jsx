@@ -3,10 +3,21 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import SliderData from "./SliderData";
 
-function PreviousWeather({cityName}) {
+
+function PreviousWeather({ cityName }) {
   const [data, setData] = useState([]);
-
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay:true,
+    autoplaySpeed :3000,
+    arrows:false,
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -34,61 +45,70 @@ function PreviousWeather({cityName}) {
   }, [cityName]);
 
   return (
-    <div className="text-center" name="forecast">
-      <span className="text-center font-bold text-3xl">Weather Prediction</span>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: 2,
-          p: 2,
-        }}
-      >
-        {data.length > 0 ? (
-          data.map((entry, index) => (
-            <Card
-              key={index}
-              sx={{
-                width: { xs: "100%", sm: "45%", md: "30%", lg: "17%" },
-                m: 1,
-              }}
-            >
-              <CardContent>
-                <Typography
-                  sx={{ fontSize: 12 }}
-                  color="text.secondary"
-                  gutterBottom
-                  className="flex"
-                >
-                  {`Date: ${entry.dt_txt.split(" ")[0]}`}
-                </Typography>
-                <Typography variant="h5" component="div">
-                  Temp: {(entry.main.temp - 273.15).toFixed(2)}°C
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  {entry.weather[0].description}
-                </Typography>
-                <Typography variant="body2">
-                  <ul>
-                    <li>
-                      Min Temp: {(entry.main.temp_min - 273.15).toFixed(2)}°C
-                    </li>
-                    <li>
-                      Max Temp: {(entry.main.temp_max - 273.15).toFixed(2)}°C
-                    </li>
-                    <li>Humidity: {entry.main.humidity}%</li>
-                    <li>Wind Speed: {entry.wind.speed} m/s</li>
-                  </ul>
-                </Typography>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <Typography>Loading...</Typography>
-        )}
-      </Box>
+    <div>
+
+      <div className="text-center hidden lg:block" name="forecast">
+        <span className="text-center  font-bold text-3xl">Weather Prediction</span>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 2,
+            p: 2,
+          }}
+        >
+          {data.length > 0 ? (
+            data.map((entry, index) => (
+              <Card
+                key={index}
+                sx={{
+                  width: { xs: "100%", sm: "45%", md: "30%", lg: "17%" },
+                  m: 1,
+                }}
+              >
+                <CardContent>
+                  <Typography
+                    sx={{ fontSize: 12 }}
+                    color="text.secondary"
+                    gutterBottom
+                    className="flex"
+                  >
+                    {`Date: ${entry.dt_txt.split(" ")[0]}`}
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    Temp: {(entry.main.temp - 273.15).toFixed(2)}°C
+                  </Typography>
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    {entry.weather[0].description}
+                  </Typography>
+                  <Typography variant="body2">
+                    <ul>
+                      <li>
+                        Min Temp: {(entry.main.temp_min - 273.15).toFixed(2)}°C
+                      </li>
+                      <li>
+                        Max Temp: {(entry.main.temp_max - 273.15).toFixed(2)}°C
+                      </li>
+                      <li>Humidity: {entry.main.humidity}%</li>
+                      <li>Wind Speed: {entry.wind.speed} m/s</li>
+                    </ul>
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <Typography>Loading...</Typography>
+          )}
+        </Box>
+      </div>
+          {/* Slider */}
+          <div>
+            <SliderData data={data}/>
+          </div>
+         
     </div>
+
   );
 }
 
